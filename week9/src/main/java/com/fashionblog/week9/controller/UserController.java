@@ -4,21 +4,18 @@ import com.fashionblog.week9.dto.UserDto;
 import com.fashionblog.week9.model.request.UserDetailsRequestModel;
 import com.fashionblog.week9.model.response.UserRest;
 import com.fashionblog.week9.service.UserService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")   //http:localhost:8080/users
+@AllArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserService userService;
+
+    private final ModelMapper modelMapper;
     @RequestMapping(method = RequestMethod.POST)
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
         UserRest returnValue = new UserRest();
@@ -28,9 +25,13 @@ public class UserController {
       modelMapper.map(createdUser, returnValue);
         return returnValue ;
     }
-    @RequestMapping()
-    public String getUser(){
-        return "getUser";
+    @RequestMapping("/{id}")
+    public UserRest getUser(@PathVariable String id){
+
+          UserRest returnValue= new UserRest();
+          UserDto userDto = userService.getUserByUserId(id);
+          modelMapper.map(userDto, returnValue);
+        return returnValue;
     }
     @RequestMapping(method = RequestMethod.PUT)
     public String updateUser(){

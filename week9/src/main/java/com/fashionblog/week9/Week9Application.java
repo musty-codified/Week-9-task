@@ -18,6 +18,10 @@ public class Week9Application {
     }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return  new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public SpringApplicationContext springApplicationContext(){
+        return new SpringApplicationContext();
     }
 }
